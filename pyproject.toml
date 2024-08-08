@@ -1,0 +1,18 @@
+[project]
+name = "example_package_YOUR_USERNAME_HERE"
+version = "1.0.0"
+authors = [
+  { name="Jeremy Louie" },
+]
+description = "Python API to build your own RAG chatbots"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/jsethlui/build-your-own-rag-chatbot"
+Issues = "https://github.com/jsethlui/build-your-own-rag-chatbot/issues"
