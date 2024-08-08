@@ -1,0 +1,3 @@
+chatbot:
+  llm: google
+  temperature: 8
