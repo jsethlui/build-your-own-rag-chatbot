@@ -1,13 +1,13 @@
 
 import os
-import json
-import yaml
-import logging
 from dotenv import load_dotenv
-from .utils import fileExtensionToLoader, loadConfig, getTextChunks
+from .utils import getTextChunks
+from .config import Config
 
+from functools import lru_cache
+from typing import Annotated
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, HTTPException, UploadFile, File
+from fastapi import FastAPI, HTTPException, UploadFile, File, Depends
 
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.prompts import PromptTemplate, ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
@@ -19,8 +19,11 @@ from langchain_community.vectorstores import Chroma
 from langchain.text_splitter import CharacterTextSplitter
 
 app = FastAPI()
-config = loadConfig()
 load_dotenv()
+
+@lru_cache
+def getConfig():
+    return Config()
 
 @app.post("/upload/")
 async def upload(file: UploadFile = File(...), chunk=False):
@@ -46,8 +49,9 @@ async def upload(file: UploadFile = File(...), chunk=False):
     embeddingFunction = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=os.getenv("API_KEY"))
     database = Chroma.from_documents(docs, embeddingFunction)
     retriever = database.as_retriever(k=10)
+    app.state.retriever = retriever
     return {"name": file.filename, "size": file.size, "content": decodedContent}
 
 @app.get("/")
-async def root():
-    return config
+async def root(config: Annotated[Config, Depends(getConfig)]):
+    return config.config
