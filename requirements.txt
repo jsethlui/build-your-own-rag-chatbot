@@ -1,3 +1,10 @@
 fastapi>=0.112.0
 fastapi-cli>=0.0.5
 python-multipart>=0.0.9
+langchain==0.1.8
+langchain-core>=0.2.29
+langchain-text-splitters>=0.2.2
+langchain-google-genai==0.0.9
+chromadb==0.4.22
+pypdf>=4.2.0
+python-dotenv>=1.0.1

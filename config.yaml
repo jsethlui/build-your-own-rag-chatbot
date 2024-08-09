@@ -1,4 +1,5 @@
 chatbot:
+  apiKey: ""
   llm: google
   temperature: 8
   template: |
